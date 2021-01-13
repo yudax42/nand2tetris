@@ -17,10 +17,24 @@ CHIP DMux4Way {
 
     PARTS:
     // Put your code here:
-    Not(in=sel[0],out=ns0);
-    Not(in=sel[1],out=ns1);
-    And3(a=in,b=ns1,c=ns0,out=a);
-    And3(a=in,b=ns1,c=sel[0], out=b);
-    And3(a=in,b=sel[1],c=ns0, out=c);
-    And3(a=in,b=sel[1],c=sel[0], out=d);
+    /* Using canonical representation */
+    //Not(in=sel[0],out=ns0);
+    //Not(in=sel[1],out=ns1);
+    //And3(a=in,b=ns1,c=ns0,out=a);
+    //And3(a=in,b=ns1,c=sel[0], out=b);
+    //And3(a=in,b=sel[1],c=ns0, out=c);
+    //And3(a=in,b=sel[1],c=sel[0], out=d);
+    /* Using DMux Applying Railroad track analogy
+                     --- a
+    	        --- $
+               |     --- b   * is a switch that control to choose between track a,b or c,d
+	in --- *             $ controls to choose the output track
+               |     --- c   
+		--- $
+	             --- d
+    */
+    DMux(in=in,sel=sel[1],a=path1,b=path2);
+    DMux(in=path1,sel=sel[0],a=a,b=b);
+    DMux(in=path2,sel=sel[0], a=c, b=d);
+
 }
