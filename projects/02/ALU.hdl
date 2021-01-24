@@ -43,4 +43,21 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+   // preset x input
+   Mux16(a=x,b[0..15]=false,sel=zx,out=stepx1); //zx
+   Not16(in=stepx1,out=notx);
+   Mux16(a=stepx1,b=notx,sel=nx,out=stepx2); //nx
+   // preset y input
+   Mux16(a=y,b[0..15]=false,sel=zy,out=stepy1); //zy
+   Not16(in=stepy1,out=noty);
+   Mux16(a=stepy1,b=noty,sel=ny,out=stepy2); //ny
+   // select betwen + / And
+   And16(a=stepx2,b=stepy2,out=andxy);
+   Add16(a=stepx2,b=stepy2,out=addxy);
+   Mux16(a=andxy,b=addxy,sel=f,out=selection);
+   // postset out
+   Not16(in=selection,out=notselection);
+   Mux16(a=selection,b=notselection,sel=no,out=out);
+   // zr and ng
+   
 }
