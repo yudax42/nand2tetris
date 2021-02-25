@@ -17,4 +17,12 @@ CHIP PC {
 
     PARTS:
     // Put your code here:
+    // The order is important reset > load > increment 
+    // which means if load = 1  and reset = 1 >> out = 0 
+    // so we need to increment first then load then reset 
+    Inc16(in=outR,out=incOutR);
+    Mux16(a=outR,b=incOutR,sel=inc,out=out1); 
+    Mux16(a=out1,b=in,sel=load,out=out2); 
+    Mux16(a=out2,b=false,sel=reset,out=inR); 
+    Register(in=inR,load=true,out=outR,out=out);
 }
