@@ -1,13 +1,22 @@
 @R0
 D=M
 
-@n
+@v
+M=0
+
+@ZERO
+D;JEQ
+
+@add
 M=D
 
 @R1
 D=M
 
-@v
+@ZERO
+D;JEQ
+
+@loopcount
 M=D
 
 @i
@@ -16,21 +25,27 @@ M=1
 (LOOP)
 	@i
 	D=M
-	@n
+	@loopcount
 	D=D-M
 	@STOP
-	D;JEQ
+	D;JGT
 	
-	@n
-	D = M
-
+	@add
+	D=M
 	@v
 	M=M+D
-
+	
 	@i
 	M=M+1
 
 	@LOOP
+	0;JMP		
+
+
+(ZERO)
+	@R2
+	M=0
+	@END
 	0;JMP
 
 (STOP)
