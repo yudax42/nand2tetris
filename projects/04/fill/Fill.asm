@@ -13,49 +13,49 @@
 
 // Put your code here.
 
-(FOREVER)
+(FOREVER) // PROGRAM LOOP
 	@SCREEN
 	D=A
 
-	@addr
-	M=D
+	@addr // register to track the value of current pixel
+	M=D 
 	
-	@KBD
+	@KBD // check if the key is pressed
 	D=M
 	
-	@WHITE
+	@WHITE // go to change the color in register to white
 	D;JEQ
 
-	@BLACK
+	@BLACK // go to change the color in register to black
 	D;JNE	
 
-	(BLACK)	
+	(BLACK)	// change the color to black
 		@color
-		M=-1
-		@DRAW
+		M=-1 // -1 : 111111111111111 to draw black pixel
+		@DRAW // jump to draw to preven from (WHITE) that change color to white
 		0;JMP
 
-	(WHITE)
+	(WHITE) // change color to white
 		@color
 		M=0
 		
-	(DRAW)
-		@24575
+	(DRAW) // loop drawing 
+		@24576 // startAddressofScreenRegister + screenRows * totalregister in the row -> 16384 + 256 * 32
 		D=A
 		@addr
-		D=M-D
-		@FOREVER
+		D=M-D // check if the addr is less than total screen available memroy 
+		@FOREVER // when it's completed drawing go to the top loop
 		D;JGT
 				
-		@color
+		@color // find the color value
 		D=M
 		
-		@addr
-		A=M
+		@addr // change the value of the pixel register
+		A=M 
 		M=D
 
-		@addr
-		M=M+1
-		@DRAW
+		@addr // increment the counter
+		M=M+1 
+		@DRAW // loop to draw next pixel
 		0;JMP
 	
