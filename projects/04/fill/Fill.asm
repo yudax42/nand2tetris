@@ -12,3 +12,50 @@
 // the screen should remain fully clear as long as no key is pressed.
 
 // Put your code here.
+
+(FOREVER)
+	@SCREEN
+	D=A
+
+	@addr
+	M=D
+	
+	@KBD
+	D=M
+	
+	@WHITE
+	D;JEQ
+
+	@BLACK
+	D;JNE	
+
+	(BLACK)	
+		@color
+		M=-1
+		@DRAW
+		0;JMP
+
+	(WHITE)
+		@color
+		M=0
+		
+	(DRAW)
+		@24575
+		D=A
+		@addr
+		D=M-D
+		@FOREVER
+		D;JGT
+				
+		@color
+		D=M
+		
+		@addr
+		A=M
+		M=D
+
+		@addr
+		M=M+1
+		@DRAW
+		0;JMP
+	
